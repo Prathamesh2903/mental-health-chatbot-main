@@ -4,6 +4,7 @@ import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { chatModel } from '../models/chat-bot.models.js';
 import { decryptData } from '../utils/encryption.js';
+import { initialPrompt } from '../utils/guidlines.js';
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
@@ -19,8 +20,7 @@ const chat = asyncHandler(async (req, res) => {
     chatHistory = new chatModel({
       sessionId,
       history: [
-        { role: 'user', parts: [{ text: 'Hello' }] },
-        { role: 'model', parts: [{ text: 'Great to meet you. What would you like to know?' }] },
+        { role: 'user', parts: [{ text: initialPrompt }] },
       ],
     });
     await chatHistory.save();
